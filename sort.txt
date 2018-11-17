@@ -1,0 +1,49 @@
+/** \brief Ordena los elementos de la lista utilizando la funcion criterio recibida como parametro
+ * \param pList LinkedList* Puntero a la lista
+ * \param pFunc (*pFunc) Puntero a la funcion criterio
+ * \param order int  [1] Indica orden ascendente - [0] Indica orden descendente
+ * \return int Retorna  (-1) Error: si el puntero a la listas es NULL
+                                ( 0) Si ok
+ */
+int ll_sort(LinkedList* this, int (*pFunc)(void*,void*), int order)
+{
+    int returnAux =-1;
+    if(this != NULL && pFunc!= NULL && order >= 0  && order <=1 )
+    {
+        returnAux =0;
+        int i;
+        int seguir;
+
+        do
+        {
+            seguir = 0;
+            Node* elementoActual = NULL;
+            Node* elementoAnterior = NULL;
+            void* auxElemento= NULL;
+            int resultadoEsperado = 1;
+            if(order)
+            {
+                resultadoEsperado = -1;
+            }
+
+            int len = ll_len(this);
+            for (i = 1; i < len; i++)
+            {
+                if (pFunc(ll_get(this,i),ll_get(this,i-1)) == resultadoEsperado)
+                {
+                    elementoActual = getNode(this,i);
+                    elementoAnterior = getNode(this,i-1);
+
+                    auxElemento = elementoActual->pElement;
+                    elementoActual->pElement = elementoAnterior->pElement;
+                    elementoAnterior->pElement = auxElemento;
+                    seguir = 1;
+                }
+            }
+        }
+        while(seguir);
+    }
+
+    return returnAux;
+
+}
